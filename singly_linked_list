@@ -1,0 +1,156 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node*  next;
+};
+struct Node* head=NULL;
+void inert_front(int val){
+    struct Node* newnode=(struct Node*) malloc(sizeof(struct Node));
+    newnode->data=val;
+    if(head==NULL){
+        head=newnode;
+        newnode->next=NULL;
+    }
+    else{
+        newnode->next=head->next;
+        head=newnode;
+    }
+}
+void insert_end(int val){
+    struct Node* newnode=(struct Node*) malloc(sizeof(struct Node));
+    struct Node* temp=(struct Node*) malloc(sizeof(struct Node));
+    newnode->data=val;
+    if(head==NULL){
+        head=newnode;
+        newnode->next=NULL;
+    }
+    else{
+        temp=head;
+        while(temp->next!=NULL){
+            temp=temp->next;
+        }
+        temp->next=newnode;
+        newnode->next=NULL;
+    }
+}
+void insertatpos(int val,int pos){
+    struct Node* newnode=(struct Node*) malloc(sizeof(struct Node));
+    struct Node* temp=(struct Node*) malloc(sizeof(struct Node));
+    struct Node* curr=(struct Node*) malloc(sizeof(struct Node));
+    newnode->data=val;
+    if(head==NULL){
+        inert_front(val);
+    }
+    else{
+        temp=head;
+        for(int i=1;i<=pos;i++){
+            curr=temp;
+            temp=temp->next;
+        }
+        curr->next=newnode->next;
+        curr->next=newnode;
+        newnode->next=temp;
+    }
+}
+void display(){
+    struct Node* temp=(struct Node*) malloc(sizeof(struct Node));
+    temp=head;
+    while(temp->next!=NULL){
+        printf("%d ->",temp->data);
+        temp=temp->next;    
+    }
+    printf("%d->NULL\n",temp->data);
+}
+void deletefront(){
+    if(head==NULL){
+        printf("LIST IS EMPTY!!!");
+    }
+    else{
+        struct Node* temp;
+        temp=head;
+        head=head->next;
+        free(temp);
+    }
+}
+void deleterear(){
+    if(head==NULL){
+        printf("LIST IS EMPTY!!!");
+    }
+    else{
+        struct Node* curr;
+        struct Node* temp;
+        temp=head;
+        while(temp->next!=NULL){
+            curr=temp;
+            temp=temp->next;    
+        }
+        curr->next=NULL;
+        free(temp);
+    }
+}
+void deleteatpos(int pos){
+    if(head==NULL){
+        printf("cant del\n"); 
+    }
+    else{
+        struct Node* temp;
+        struct Node* curr;
+        struct Node* prev;
+        int i=0;
+        if(pos==0){
+            deletefront();
+        }
+        temp=head;
+        curr=NULL;
+        while(i<pos&&temp!=NULL){
+            curr=temp;
+            temp=temp->next;  
+            i++;  
+        }
+        if(temp==NULL){
+            printf("WRONG");
+        }
+        curr->next=temp->next;
+        free(temp);
+    }
+}
+void reverse(){
+    struct Node* prev=NULL;
+    struct Node* curr=NULL;
+    if(head!=NULL){
+        prev=head;
+        curr=head->next;
+        head=head->next;
+        
+        prev->next=NULL;
+    }
+    while(head!=NULL){
+        head=head->next;
+        curr->next=prev;
+        prev=curr;
+        curr=head;
+    }
+    head=prev;
+    printf("susess!!\n");
+}
+int main(){
+    insert_end(10);
+    insert_end(20);
+    insert_end(30);
+    display();
+    reverse();
+    display();
+    inert_front(5);
+    display();
+    insertatpos(15,2);
+    display();
+    deleterear();
+    display();
+    deletefront();
+    display();
+    deleteatpos(1);
+    display();
+    return 0;
+}
